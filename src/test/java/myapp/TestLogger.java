@@ -93,4 +93,15 @@ public class TestLogger {
 
 	}
 
+	@Autowired
+	@Qualifier("beanFileLogger")
+	BeanFileLogger beanFileLogger;
+
+	@Test
+	public void testBeanFileLoggerDefaultValue(){
+		beanFileLogger.log(" : " + beanFileLogger.getFileName());
+		assertTrue(beanFileLogger.getFileName() != null);
+
+	}
+
 }
