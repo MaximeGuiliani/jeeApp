@@ -1,5 +1,7 @@
 package myapp;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,11 +10,16 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class SpringConfiguration {
-	
+
 	@Bean
 	public String bye() {
 		return "Bye.";
 	}
 
-}
+	@Bean
+	@Qualifier("fileLoggerWithConstructor")
+	public ILogger fileLoggerWithConstructor(@Value("${logfile}") String logFile) {
+		return new FileLogger(logFile);
+	}
 
+}

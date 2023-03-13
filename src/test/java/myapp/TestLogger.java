@@ -4,17 +4,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.PrintStream;
 
 import javax.annotation.Resource;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootTest
-public class TestStderrLogger {
+public class TestLogger {
     
    
 	@Autowired
@@ -68,8 +71,26 @@ public class TestStderrLogger {
 		
 		assertTrue( byteArrayOutputStream.toString().contains("testLoggerByteArrayOutputStream"));
 		
-		
 	}
+
+	// deuxième implémentation de ILogger
 	
+	@Autowired
+    @Qualifier("fileLoggerWithConstructor") // pour choisir l'implantation
+    ILogger fileLoggerWithConstructor;
+	
+	@Value("${logfile}")
+	String logfile =  "";
+    @Test
+    public void testFileLoggerWithConstructor() {
+
+		
+        fileLoggerWithConstructor.log("This message should be in a file");
+		File tmpfile = new File(logfile);
+
+		assertTrue(tmpfile.exists());
+		
+
+	}
 
 }
